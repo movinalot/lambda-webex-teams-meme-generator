@@ -1,10 +1,8 @@
 """
 Name:
     lambda_handler.py
-
 Purpose:
     lambda hander for the DevNet Day Meme Generator Skill
-
 Author:
     John McDonough (jomcdono@cisco.com)
     Cisco Systems, Inc.
@@ -14,9 +12,6 @@ from __future__ import print_function
 from botocore.vendored import requests
 import json
 import random
-
-imgflip_url = "http://api.imgflip.com/caption_image"
-webex_t_url = "https://api.ciscospark.com/v1"
 
 meme_images = {
     "Batman" : "438680", 
@@ -46,7 +41,7 @@ meme_texts = [
        "text1":"So the teacher walks away" 
     },
     {
-        "text0":"Parents cal it talking back",
+        "text0":"Parents call it talking back",
         "text1":"We call it explaining"
     },
     {
@@ -99,27 +94,28 @@ meme_texts = [
     }
 ]
 
-messages_resource = '/messages'
+imgflip_url = "http://api.imgflip.com/caption_image"
+webex_t_url = "https://api.ciscospark.com/v1"
+webex_t_msg_resource = '/messages'
 
-# Put your values here
-api_token = 'bot-token-goes-here'
-recipient = 'webex-teams-recient-goes-here'
+# Put your values here for imgFlip
 imgflip_u = 'imgflip-username-goes-here'
 imgflip_p = 'imgflip-password-goes-here'
+
+# Put your values here for Webex Teams
+webex_t_token = 'webex-teams-bot-token-goes-here'
+webex_t_email = 'webex-teams-recipient-email-goes-here'
 
 # Meme Creation functions
 def make_any_meme():
 
-    # Url encoding looks like this
-    # username=myusername&password=mypassword&template_id=84341851&text0=try%20this&text1=or%20this
-    
     imgflip_headers = {
         'Content-Type': "application/x-www-form-urlencoded",
         'Accept': "application/json",
     }
 
     meme_image = random.choice(meme_images.keys())
-    meme_text  = random.randint(0, len(meme_texts))
+    meme_text  = random.randint(0, len(meme_texts)-1)
     
     d = {
         'username': imgflip_u,
@@ -140,24 +136,28 @@ def make_any_meme():
 
     print(response.text)
     
-    json_resp = json.loads(response.text)
-    msg_text  = json_resp['data']['page_url'].replace('\\','')
+    json_response    = json.loads(response.text)
+    imgflip_page_url = json_response['data']['page_url'].replace('\\','')
+    imgflip_file_url = json_response['data']['url'].replace('\\','')
 
     webex_t_headers = {
-        'Authorization': 'Bearer ' + api_token,
+        'Authorization': 'Bearer ' + webex_t_token,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
     
-    msg_json = {
-        "toPersonEmail": recipient,
-        "text": msg_text
+    webex_t_msg_json = {
+        "toPersonEmail": webex_t_email,
+        "markdown": "**Here's your meme!** " + imgflip_page_url,
+	    "files": [
+		    imgflip_file_url
+    	]
     }
     
     response = requests.request(
         "POST",
-        webex_t_url + messages_resource,
-        json=msg_json,
+        webex_t_url + webex_t_msg_resource,
+        json=webex_t_msg_json,
         headers=webex_t_headers
     )
 
@@ -197,9 +197,9 @@ def get_welcome_response():
 
     session_attributes = {}
     card_title = "Welcome"
-    speech_output = "Welcome to the DevNet Day Skill for Meme Creation." \
-                    "You can say things like, make me a meme." \
-                    "Or you can say create a kermit meme."
+    speech_output = ("Welcome to the DevNet Day Skill for Meme Creation. " +
+                    "You can say things like, make me a meme. " +
+                    "Or you can say create a kermit meme.")
 
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
