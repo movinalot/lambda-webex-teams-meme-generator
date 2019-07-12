@@ -116,26 +116,26 @@ def make_any_meme():
 
     meme_image = random.choice(meme_images.keys())
     meme_text  = random.randint(0, len(meme_texts)-1)
-    
-    d = {
-        'username': imgflip_u,
-        'password': imgflip_p,
-        'template_id': meme_images[meme_image],
-        'text0': meme_texts[meme_text]['text0'], 
-        'text1': meme_texts[meme_text]['text1']
-    }
-    
-    print(d)
 
+
+    encoded_url = (
+        imgflip_url + 
+        "?username="+imgflip_u +
+        "&password="+imgflip_p +
+        "&template_id="+meme_images[meme_image] +
+        "&text0="+meme_texts[meme_text]['text0'] +
+        "&text1="+meme_texts[meme_text]['text1']
+    )
+    
+    print(encoded_url)
     response = requests.request(
-        "POST", 
-        imgflip_url, 
-        data=d,
+        "GET", 
+        encoded_url,
         headers=imgflip_headers
     )
 
     print(response.text)
-    
+
     json_response    = json.loads(response.text)
     imgflip_page_url = json_response['data']['page_url'].replace('\\','')
     imgflip_file_url = json_response['data']['url'].replace('\\','')
