@@ -7,14 +7,15 @@ Author:
     John McDonough (jomcdono@cisco.com)
     Cisco Systems, Inc.
 """
+# pylint: disable=unused-argument, import-error, inconsistent-return-statements
 
 from __future__ import print_function
-from botocore.vendored import requests
 import json
 import random
+from botocore.vendored import requests
 
-meme_images = {
-    "Batman" : "438680", 
+MEME_IMAGES = {
+    "Batman" : "438680",
     "Spongebob":"102156234",
     "Butterfly":"100777631",
     "Alien":"101470",
@@ -27,136 +28,137 @@ meme_images = {
     "Patrick":"61581"
 }
 
-meme_texts = [
+MEME_TEXTS = [
     {
-        "text0":"Hand sanitizer helps you",
-        "text1":"Discover the cuts you didn't know you had"
+        "text0": "Hand sanitizer helps you",
+        "text1": "Discover the cuts you didn't know you had"
     },
     {
-       "text0":"Everything is funnier",
-       "text1":"When you're not allowed to laugh" 
+        "text0": "Everything is funnier",
+        "text1": "When you're not allowed to laugh"
     },
     {
-       "text0":"Saying, I get it!",
-       "text1":"So the teacher walks away" 
+        "text0": "Saying, I get it!",
+        "text1": "So the teacher walks away"
     },
     {
-        "text0":"Parents call it talking back",
-        "text1":"We call it explaining"
+        "text0": "Parents call it talking back",
+        "text1": "We call it explaining"
     },
     {
-        "text0":"Mom: Why is everything on the floor?",
-        "text1":"Gravity Mom!"
+        "text0": "Mom: Why is everything on the floor?",
+        "text1": "Gravity Mom!"
     },
     {
-      "text0":"That song is soooo old!",
-      "text1":"So are your parents, you still listen to them"  
+        "text0": "That song is soooo old!",
+        "text1": "So are your parents, you still listen to them"
     },
     {
-        "text0":"Where have you been all my life?",
-        "text1":"Please go back there."
+        "text0": "Where have you been all my life?",
+        "text1": "Please go back there."
     },
     {
-        "text0":"This is me",
-        "text1":"When someone ignores me"
+        "text0": "This is me",
+        "text1": "When someone ignores me"
     },
     {
-        "text0":"When you're about to say something interesting",
-        "text1":"And the topic changes."
+        "text0": "When you're about to say something interesting",
+        "text1": "And the topic changes."
     },
     {
-        "text0":"Message send failed, retry?",
-        "text1":"Uh, duh, yes!"
+        "text0": "Message send failed, retry?",
+        "text1": "Uh, duh, yes!"
     },
     {
-        "text0":"Teacher - Don't pack up yet...",
-        "text1":"Students - *quietly pack up*"
+        "text0": "Teacher - Don't pack up yet...",
+        "text1": "Students - *quietly pack up*"
     },
     {
-        "text0":"We all have that one friend",
-        "text1":"That needs to learn how to whisper"
+        "text0": "We all have that one friend",
+        "text1": "That needs to learn how to whisper"
     },
     {
-        "text0":"Cleaning my room",
-        "text1":"2% cleaning, 35% complaining, 63% playing with stuff"
+        "text0": "Cleaning my room",
+        "text1": "2% cleaning, 35% complaining, 63% playing with stuff"
     },
     {
-        "text0":"Parents: We need to talk, Me: Oh no!",
-        "text1":"Parents: Stop leaving the lights on"
+        "text0": "Parents: We need to talk, Me: Oh no!",
+        "text1": "Parents: Stop leaving the lights on"
     },
     {
-        "text0":"Oh, you're upset you got a 97 on the test",
-        "text1":"Here use my 56 to dry your tears"
+        "text0": "Oh, you're upset you got a 97 on the test",
+        "text1": "Here use my 56 to dry your tears"
     },
     {
-        "text0":"Family sized cookie packages, good!",
-        "text1":"Sharing with family, bad!"
+        "text0": "Family sized cookie packages, good!",
+        "text1": "Sharing with family, bad!"
     }
 ]
 
-imgflip_url = "http://api.imgflip.com/caption_image"
-webex_t_url = "https://api.ciscospark.com/v1"
-webex_t_msg_resource = '/messages'
+IMGFLIP_URL = "http://api.imgflip.com/caption_image"
+WEBEX_T_URL = "https://api.ciscospark.com/v1"
+WEBEX_T_MSG_RESOURCE = '/messages'
 
 # Put your values here for imgFlip
-imgflip_u = 'imgflip-username-goes-here'
-imgflip_p = 'imgflip-password-goes-here'
+IMGFLIP_U = 'imgflip-username-goes-here'
+IMGFLIP_P = 'imgflip-password-goes-here'
 
 # Put your values here for Webex Teams
-webex_t_token = 'webex-teams-bot-token-goes-here'
-webex_t_email = 'webex-teams-recipient-email-goes-here'
+WEBEX_T_TOKEN = 'webex-teams-bot-token-goes-here'
+WEBEX_T_EMAIL = 'webex-teams-recipient-email-goes-here'
 
 # Meme Creation functions
 def make_any_meme():
+    """ Make a random meme and send to requester """
 
     imgflip_headers = {
         'Content-Type': "application/x-www-form-urlencoded",
         'Accept': "application/json",
     }
 
-    meme_image = random.choice(meme_images.keys())
-    meme_text  = random.randint(0, len(meme_texts)-1)
+    meme_image = random.choice(MEME_IMAGES.keys())
+    meme_text = random.randint(0, len(MEME_TEXTS)-1)
 
 
     encoded_url = (
-        imgflip_url + 
-        "?username="+imgflip_u +
-        "&password="+imgflip_p +
-        "&template_id="+meme_images[meme_image] +
-        "&text0="+meme_texts[meme_text]['text0'] +
-        "&text1="+meme_texts[meme_text]['text1']
+        IMGFLIP_URL +
+        "?username="+IMGFLIP_U +
+        "&password="+IMGFLIP_P +
+        "&template_id="+MEME_IMAGES[meme_image] +
+        "&text0="+MEME_TEXTS[meme_text]['text0'] +
+        "&text1="+MEME_TEXTS[meme_text]['text1']
     )
-    
+
     print(encoded_url)
     response = requests.request(
-        "GET", 
+        "GET",
         encoded_url,
         headers=imgflip_headers
     )
 
     print(response.text)
 
-    json_response    = json.loads(response.text)
-    imgflip_page_url = json_response['data']['page_url'].replace('\\','')
-    imgflip_file_url = json_response['data']['url'].replace('\\','')
+    json_response = json.loads(response.text)
+    imgflip_page_url = json_response['data']['page_url'].replace('\\', '')
+    imgflip_file_url = json_response['data']['url'].replace('\\', '')
 
     webex_t_headers = {
-        'Authorization': 'Bearer ' + webex_t_token,
+        'Authorization': 'Bearer ' + WEBEX_T_TOKEN,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-    
+
     webex_t_msg_json = {
-        "toPersonEmail": webex_t_email,
+        "toPersonEmail": WEBEX_T_EMAIL,
         "markdown": "**Here's your meme!** " + imgflip_page_url,
-	    "files": [
-		    imgflip_file_url
-    	]
+        "files": [
+            imgflip_file_url
+        ]
     }
-    
+
     response = requests.request(
         "POST",
-        webex_t_url + webex_t_msg_resource,
+        WEBEX_T_URL + WEBEX_T_MSG_RESOURCE,
         json=webex_t_msg_json,
         headers=webex_t_headers
     )
@@ -164,6 +166,8 @@ def make_any_meme():
 # --------------- Helpers that build all of the responses ----------------------
 
 def build_speechlet_response(title, output, reprompt_text, should_end_session):
+    """ Build Speechlet Response """
+
     return {
         'outputSpeech': {
             'type': 'PlainText',
@@ -185,6 +189,8 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 
 
 def build_response(session_attributes, speechlet_response):
+    """ Build Response """
+
     return {
         'version': '1.0',
         'sessionAttributes': session_attributes,
@@ -194,12 +200,15 @@ def build_response(session_attributes, speechlet_response):
 # --------------- Functions that control the skill's behavior ------------------
 
 def get_welcome_response():
+    """ Get Welcome Response """
 
     session_attributes = {}
     card_title = "Welcome"
-    speech_output = ("Welcome to the DevNet Day Skill for Meme Creation. " +
-                    "You can say things like, make me a meme. " +
-                    "Or you can say create a kermit meme.")
+    speech_output = (
+        "Welcome to the DevNet Day Skill for Meme Creation. " +
+        "You can say things like, make me a meme. " +
+        "Or you can say create a kermit meme."
+    )
 
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
@@ -210,9 +219,13 @@ def get_welcome_response():
         card_title, speech_output, reprompt_text, should_end_session))
 
 def handle_session_end_request():
+    """ Called when the session is ended """
+
     card_title = "Session Ended"
-    speech_output = ("Thank you for using the DevNet Day Alexa Skill " +
-                    "for meme generation.")
+    speech_output = (
+        "Thank you for using the DevNet Day Alexa Skill " +
+        "for meme generation."
+    )
 
     # Setting this to true ends the session and exits the skill.
     should_end_session = True
@@ -221,6 +234,8 @@ def handle_session_end_request():
 
 # Make a meme
 def make_meme(intent, session):
+    """ Make a meme and congratulate """
+
     session_attributes = {}
     reprompt_text = None
 
@@ -282,7 +297,7 @@ def on_session_ended(session_ended_request, session):
 # --------------- Main handler ------------------
 
 def lambda_handler(event, context):
-    """ 
+    """
     Route the incoming request based on type (LaunchRequest, IntentRequest,
     etc.) The JSON body of the request is provided in the event parameterself.
     """
