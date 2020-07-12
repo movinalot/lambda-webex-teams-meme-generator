@@ -9,10 +9,9 @@ Author:
 """
 # pylint: disable=unused-argument, import-error, inconsistent-return-statements
 
-from __future__ import print_function
 import json
 import random
-from botocore.vendored import requests
+import requests
 
 MEME_IMAGES = {
     "Batman" : "438680",
@@ -96,16 +95,18 @@ MEME_TEXTS = [
 ]
 
 IMGFLIP_URL = "http://api.imgflip.com/caption_image"
-WEBEX_T_URL = "https://api.ciscospark.com/v1"
+WEBEX_T_URL = "https://webexapis.com/v1"
 WEBEX_T_MSG_RESOURCE = '/messages'
 
 # Put your values here for imgFlip
-IMGFLIP_U = 'imgflip-username-goes-here'
-IMGFLIP_P = 'imgflip-password-goes-here'
+IMGFLIP_U = 'movinalot'
+IMGFLIP_P = 'C1sco12345'
 
 # Put your values here for Webex Teams
-WEBEX_T_TOKEN = 'webex-teams-bot-token-goes-here'
-WEBEX_T_EMAIL = 'webex-teams-recipient-email-goes-here'
+WEBEX_T_TOKEN = (
+    'MDdmOWEwZjgtOTJlZS00ZTZlLWFkZjMtZmRhMzcxMWYzMjZmOWYwNzZkMTEtMjQ3'
+)
+WEBEX_T_EMAIL = 'mcdonough@movinalot.com'
 
 # Meme Creation functions
 def make_any_meme():
@@ -116,7 +117,7 @@ def make_any_meme():
         'Accept': "application/json",
     }
 
-    meme_image = random.choice(MEME_IMAGES.keys())
+    meme_image = random.choice(list(MEME_IMAGES.keys()))
     meme_text = random.randint(0, len(MEME_TEXTS)-1)
 
 
@@ -129,14 +130,14 @@ def make_any_meme():
         "&text1="+MEME_TEXTS[meme_text]['text1']
     )
 
-    print(encoded_url)
+    #print(encoded_url)
     response = requests.request(
         "GET",
         encoded_url,
         headers=imgflip_headers
     )
 
-    print(response.text)
+    #print(response.text)
 
     json_response = json.loads(response.text)
     imgflip_page_url = json_response['data']['page_url'].replace('\\', '')
@@ -276,7 +277,7 @@ def on_intent(intent_request, session):
     intent_name = intent_request['intent']['name']
 
     # Dispatch to your skill's intent handlers
-    if intent_name == "MakeMeme":          # Entry point for the MakeMeme intent
+    if intent_name == "MakeMeme":         # Entry point for the MakeMeme intent
         return make_meme(intent, session)
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
@@ -304,6 +305,7 @@ def lambda_handler(event, context):
 
     print("event.session.application.applicationId=" +
           event['session']['application']['applicationId'])
+
 
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},
