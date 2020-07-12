@@ -104,9 +104,9 @@ IMGFLIP_P = 'C1sco12345'
 
 # Put your values here for Webex Teams
 WEBEX_T_TOKEN = (
-    'MDdmOWEwZjgtOTJlZS00ZTZlLWFkZjMtZmRhMzcxMWYzMjZmOWYwNzZkMTEtMjQ3'
+    'your_token_here'
 )
-WEBEX_T_EMAIL = 'mcdonough@movinalot.com'
+WEBEX_T_EMAIL = 'your_email_here'
 
 # Meme Creation functions
 def make_any_meme():
