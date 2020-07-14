@@ -9,6 +9,7 @@ Author:
 """
 # pylint: disable=unused-argument, import-error, inconsistent-return-statements
 
+import os
 import json
 import random
 import requests
@@ -103,10 +104,8 @@ IMGFLIP_U = 'movinalot'
 IMGFLIP_P = 'C1sco12345'
 
 # Put your values here for Webex Teams
-WEBEX_T_TOKEN = (
-    'your_token_here'
-)
-WEBEX_T_EMAIL = 'your_email_here'
+WEBEX_T_TOKEN = os.environ['WEBEX_T_TOKEN']
+WEBEX_T_EMAIL = os.environ['WEBEX_T_EMAIL']
 
 # Meme Creation functions
 def make_any_meme():
